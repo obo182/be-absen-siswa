@@ -21,7 +21,7 @@ module.exports = class UserController {
         throw {status : 401, message : "Email/Password Wrong"}
       }
 
-      const acs_tkn = token({id : user.id, username : user.username})
+      const acs_tkn = token({id : user.id, username : user.username, role:user.role})
       res.status(200).json({access_token : acs_tkn})
     } catch (error) {
       next(error)
