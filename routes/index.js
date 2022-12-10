@@ -1,10 +1,10 @@
 const router = require('express').Router()
 const siswa = require('./siswa.js')
 const guru = require('./guru.js')
-const UserController = require('../controllers/UserController.js')
+const user = require('./user.js')
 
 router.get('/', (req,res,next) => res.status(200).json({message : 'SMKN 2 Sumbawa Besar'}))
-router.post('/login', UserController.login)
+router.use('/user', user)
 router.use('/siswa',siswa)
 router.use('/guru',guru)
 

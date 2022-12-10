@@ -71,12 +71,4 @@ module.exports = class SiswaController {
       next(error)
     }
   }
-
-  static async updateAkun(req, res, next){
-    try {
-      
-    } catch (error) {
-      next(error)
-    }
-  }
 }
