@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Siswa.hasMany(models.DataAbsen, {foreignKey : 'id_siswa'})
     }
   }
   Siswa.init({

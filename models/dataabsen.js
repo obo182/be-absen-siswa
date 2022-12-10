@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      DataAbsen.belongsTo(models.Siswa, {foreignKey : 'id_siswa'})
+
     }
   }
   DataAbsen.init({
