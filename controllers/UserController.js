@@ -1,5 +1,5 @@
 const { compare, hash } = require('../helpers/bcryptjs.js')
-const { token } = require('../helpers/jwt.js')
+const { token, decoded } = require('../helpers/jwt.js')
 const {User} = require('../models/index.js')
 
 module.exports = class UserController {
@@ -49,5 +49,16 @@ module.exports = class UserController {
     } catch (error) {
       next(error)
     }
+  }
+
+  static async checkToken(req, res, next){
+    try {
+      const {token} = req.body
+      const result = decoded(token)
+      res.status(200).json(result)
+    } catch (error) {
+      next({status : 401, message : 'Token Failure'})
+    }
+
   }
 }
