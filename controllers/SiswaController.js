@@ -1,4 +1,5 @@
 const {Siswa, DataAbsen} = require('../models/index.js')
+const axios = require('axios')
 
 module.exports = class SiswaController {
   static async getAll(req, res, next){
@@ -11,10 +12,10 @@ module.exports = class SiswaController {
   }
   static async tambahSiswa(req, res, next){
     try {
-      const {nisn, nama_lengkap, alamat, ttl, no_hp_siswa, no_hp_ortu} = req.body
+      const {nisn, nama_lengkap,jenis_kelamin, alamat, tempat_lahir, ttl, no_hp_siswa, no_hp_ortu} = req.body
 
       const siswa = await Siswa.create({
-        nisn, nama_lengkap, alamat, ttl, no_hp_siswa, no_hp_ortu
+        nisn, nama_lengkap,jenis_kelamin, alamat, tempat_lahir, ttl, no_hp_siswa, no_hp_ortu
       })
 
       res.status(201).json(siswa)
@@ -39,10 +40,10 @@ module.exports = class SiswaController {
   }
   static async editSiswa(req, res, next){
     try {
-      const {nisn, nama_lengkap, alamat, ttl, no_hp_siswa, no_hp_ortu} = req.body
+      const {nisn, nama_lengkap,jenis_kelamin, alamat, tempat_lahir, ttl, no_hp_siswa, no_hp_ortu} = req.body
 
       const result = await Siswa.update({
-        nisn, nama_lengkap, alamat, ttl, no_hp_siswa, no_hp_ortu
+        nisn, nama_lengkap,jenis_kelamin, alamat, tempat_lahir, ttl, no_hp_siswa, no_hp_ortu
       }, {
         where : {
           id : req.params.idSiswa
@@ -78,10 +79,28 @@ module.exports = class SiswaController {
   static async absensi(req, res, next){
     try {
       const {id_siswa, status} = req.body
+      const siswa = await Siswa.findOne({
+        where : {
+          id : id_siswa
+        }
+      })
+
+      if(!siswa){
+        throw {status : 400, message :  `ID ${id_siswa} Not Found!`}
+      }
       const absen = await DataAbsen.create({
         id_siswa, status
       })
-      res.status(201).json(absen)
+      const notif = await axios({
+        url : 'http://localhost:3001/send',
+        method : 'POST',
+        data : {
+          no_hp_ortu : siswa.no_hp_ortu,
+          message : `${siswa.nama_lengkap} Telah Dinyatakan ${status}`
+        }
+      })
+      
+      res.status(201).json({...absen.dataValues, ...notif.data})
     } catch (error) {
       next(error)
     }

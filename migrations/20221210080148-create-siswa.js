@@ -16,7 +16,13 @@ module.exports = {
       nama_lengkap: {
         type: Sequelize.STRING
       },
+      jenis_kelamin: {
+        type: Sequelize.STRING
+      },
       alamat: {
+        type: Sequelize.STRING
+      },
+      tempat_lahir: {
         type: Sequelize.STRING
       },
       ttl: {

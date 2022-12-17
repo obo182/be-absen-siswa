@@ -17,7 +17,9 @@ module.exports = (sequelize, DataTypes) => {
   Siswa.init({
     nisn: DataTypes.STRING,
     nama_lengkap: DataTypes.STRING,
+    jenis_kelamin: DataTypes.STRING,
     alamat: DataTypes.STRING,
+    tempat_lahir: DataTypes.STRING,
     ttl: DataTypes.STRING,
     no_hp_siswa: DataTypes.STRING,
     no_hp_ortu: DataTypes.STRING
