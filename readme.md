@@ -15,7 +15,8 @@ Aplikasi Absensi Siswa Ini Bersifat Gratis, Untuk Memudahkan Para Guru Memberi I
 1. Arahkan Terminal Pada Folder Aplikasi
 1. Install Dependencies Yang Dibutuhkan ```(npm i)```
 1. Jalankan Aplikasi ```(npm run dev)```
+>note : Silahkan Download Dan Jalankan ```node app.js``` Fitur Send Message WhatsApp Pada Link Berikut [SEND WA](https://github.com/wahyurahmana/send-message-wa-api)
 
 ## INFO
 > Apabila Ingin Merubah Atau Custom Bentuk Data Sesuai Keinginan, Anda Bisa Menghubungi Kami di :
-> HP/WA : 082236464656
+> ```HP/WA : 082236464656```
