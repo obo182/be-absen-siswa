@@ -20,13 +20,13 @@ module.exports = class SiswaController {
         username,
         password : hash(`${process.env.PASSWORD_GURU}`),
         role :'guru'
-      })
+      }, { transaction: t })
 
       const guru = await ProfileGuru.create({
         user_id : user.id,
         nama_lengkap,
         alamat
-      })
+      }, { transaction: t })
       
       await t.commit();
       res.status(201).json(guru)
@@ -40,9 +40,14 @@ module.exports = class SiswaController {
       if(+req.params.idGuru === 1){
         throw {status : 400, message : `Cannot Delete Profile Guru Id ${req.params.idGuru} - ADMIN`}
       }
-      const result = await ProfileGuru.destroy({
+      const checkUser = await ProfileGuru.findOne({
         where : {
           id : req.params.idGuru
+        }
+      })
+      const result = await User.destroy({
+        where : {
+          id : checkUser.user_id
         }
       })
       if(!result){

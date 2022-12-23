@@ -96,7 +96,7 @@ module.exports = class SiswaController {
         method : 'POST',
         data : {
           no_hp_ortu : siswa.no_hp_ortu,
-          message : `${siswa.nama_lengkap} Telah Dinyatakan ${status}`
+          message : `Anak Anda ${siswa.nama_lengkap} *${status}*`
         }
       })
       
