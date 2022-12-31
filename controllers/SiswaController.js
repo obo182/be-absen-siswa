@@ -67,6 +67,9 @@ module.exports = class SiswaController {
           },
           include : [DataAbsen]
         })
+        if(!result){
+          throw {status : 404, message : `Siswa Id ${req.params.idSiswa} Not Found`}
+        }
         res.status(200).json(result)
       } catch (error) {
         next(error)

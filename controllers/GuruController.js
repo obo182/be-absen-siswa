@@ -5,7 +5,29 @@ module.exports = class SiswaController {
   static async getAll(req, res, next){
     try {
       const result = await ProfileGuru.findAll({
-        include : [User]
+        attributes : ['id','nama_lengkap', 'alamat']
+      })
+      res.status(200).json(result)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async getDetailGuru(req, res, next){
+    try {
+      const result = await ProfileGuru.findOne({
+        where : {
+          id : req.params.idGuru
+        },
+        include : [{
+          model : User,
+          attributes : {
+            exclude : ['password', 'createdAt', 'updatedAt']
+          }
+        }],
+        attributes : {
+          exclude : ['createdAt', 'updatedAt']
+        }
       })
       res.status(200).json(result)
     } catch (error) {
