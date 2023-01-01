@@ -5,7 +5,29 @@ module.exports = class SiswaController {
   static async getAll(req, res, next){
     try {
       const result = await ProfileGuru.findAll({
-        include : [User]
+        attributes : ['id','nama_lengkap', 'alamat']
+      })
+      res.status(200).json(result)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async getDetailGuru(req, res, next){
+    try {
+      const result = await ProfileGuru.findOne({
+        where : {
+          id : req.params.idGuru
+        },
+        include : [{
+          model : User,
+          attributes : {
+            exclude : ['password', 'createdAt', 'updatedAt']
+          }
+        }],
+        attributes : {
+          exclude : ['createdAt', 'updatedAt']
+        }
       })
       res.status(200).json(result)
     } catch (error) {
@@ -20,13 +42,13 @@ module.exports = class SiswaController {
         username,
         password : hash(`${process.env.PASSWORD_GURU}`),
         role :'guru'
-      })
+      }, { transaction: t })
 
       const guru = await ProfileGuru.create({
         user_id : user.id,
         nama_lengkap,
         alamat
-      })
+      }, { transaction: t })
       
       await t.commit();
       res.status(201).json(guru)
@@ -40,9 +62,14 @@ module.exports = class SiswaController {
       if(+req.params.idGuru === 1){
         throw {status : 400, message : `Cannot Delete Profile Guru Id ${req.params.idGuru} - ADMIN`}
       }
-      const result = await ProfileGuru.destroy({
+      const checkUser = await ProfileGuru.findOne({
         where : {
           id : req.params.idGuru
+        }
+      })
+      const result = await User.destroy({
+        where : {
+          id : checkUser.user_id
         }
       })
       if(!result){
@@ -67,14 +94,6 @@ module.exports = class SiswaController {
         throw {status : 404, message : `Profile Guru Id ${req.params.idGuru} Not Found`}
       }
       res.status(200).json({message : `Succes Update Profile Guru Id ${req.params.idGuru}`})
-    } catch (error) {
-      next(error)
-    }
-  }
-
-  static async updateAkun(req, res, next){
-    try {
-      
     } catch (error) {
       next(error)
     }

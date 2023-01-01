@@ -1,5 +1,5 @@
-const { compare } = require('../helpers/bcryptjs.js')
-const { token } = require('../helpers/jwt.js')
+const { compare, hash } = require('../helpers/bcryptjs.js')
+const { token, decoded } = require('../helpers/jwt.js')
 const {User} = require('../models/index.js')
 
 module.exports = class UserController {
@@ -26,5 +26,39 @@ module.exports = class UserController {
     } catch (error) {
       next(error)
     }
+  }
+
+  static async updateAkun(req, res, next){
+    try {
+      const {username, password, role} = req.body
+      const pass = hash(password)
+      const result = await User.update({
+        username, 
+        password : pass,
+        role
+      }, {
+        where : {
+          id : req.params.idUser
+        }
+      })
+      if(!result[0]){
+        throw {status : 404, message : `User Id ${req.params.idUser} Not Found`}
+      }
+      res.status(200).json({message : `Succes Update User Id ${req.params.idUser}`})
+      
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async checkToken(req, res, next){
+    try {
+      const {token} = req.body
+      const result = decoded(token)
+      res.status(200).json(result)
+    } catch (error) {
+      next({status : 401, message : 'Token Failure'})
+    }
+
   }
 }
