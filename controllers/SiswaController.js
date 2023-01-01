@@ -65,7 +65,15 @@ module.exports = class SiswaController {
           where : {
             id : req.params.idSiswa
           },
-          include : [DataAbsen]
+          include : [{
+            model : DataAbsen,
+            attributes : {
+              exclude : ['updatedAt']
+            }
+          }],
+          attributes : {
+            exclude : ['createdAt', 'updatedAt']
+          }
         })
         if(!result){
           throw {status : 404, message : `Siswa Id ${req.params.idSiswa} Not Found`}
@@ -98,7 +106,7 @@ module.exports = class SiswaController {
         url : 'http://localhost:3001/send',
         method : 'POST',
         data : {
-          no_hp_ortu : siswa.no_hp_ortu,
+          no_hp_ortu : '62'+siswa.no_hp_ortu,
           message : `Anak Anda ${siswa.nama_lengkap} *${status}*`
         }
       })
