@@ -12,10 +12,10 @@ module.exports = class SiswaController {
   }
   static async tambahSiswa(req, res, next){
     try {
-      const {nisn, nama_lengkap,jenis_kelamin, alamat, tempat_lahir, ttl, no_hp_siswa, no_hp_ortu} = req.body
+      const {nisn, nama_lengkap,jenis_kelamin, alamat, tempat_lahir, ttl, no_hp_siswa, no_hp_ortu, id_kelas} = req.body
 
       const siswa = await Siswa.create({
-        nisn, nama_lengkap,jenis_kelamin, alamat, tempat_lahir, ttl, no_hp_siswa, no_hp_ortu
+        nisn, nama_lengkap,jenis_kelamin, alamat, tempat_lahir, ttl, no_hp_siswa, no_hp_ortu, id_kelas
       })
 
       res.status(201).json(siswa)
@@ -40,10 +40,10 @@ module.exports = class SiswaController {
   }
   static async editSiswa(req, res, next){
     try {
-      const {nisn, nama_lengkap,jenis_kelamin, alamat, tempat_lahir, ttl, no_hp_siswa, no_hp_ortu} = req.body
+      const {nisn, nama_lengkap,jenis_kelamin, alamat, tempat_lahir, ttl, no_hp_siswa, no_hp_ortu, id_kelas} = req.body
 
       const result = await Siswa.update({
-        nisn, nama_lengkap,jenis_kelamin, alamat, tempat_lahir, ttl, no_hp_siswa, no_hp_ortu
+        nisn, nama_lengkap,jenis_kelamin, alamat, tempat_lahir, ttl, no_hp_siswa, no_hp_ortu,id_kelas
       }, {
         where : {
           id : req.params.idSiswa
